@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-03-14 23:33:24",
+  "model_name": "dbmdz/distilbert-base-turkish-cased",
+  "num_labels": 10,
+  "device": "cpu",
+  "saved_by": "notebook-forced-save"
+}

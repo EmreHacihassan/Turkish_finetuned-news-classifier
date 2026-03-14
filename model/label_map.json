@@ -1,0 +1,26 @@
+{
+  "cat2id": {
+    "Dünya": 0,
+    "Ekonomi": 1,
+    "Eğitim": 2,
+    "Gündem": 3,
+    "Kültür-Sanat": 4,
+    "Otomobil": 5,
+    "Sağlık": 6,
+    "Spor": 7,
+    "Teknoloji": 8,
+    "Yaşam": 9
+  },
+  "id2cat": {
+    "0": "Dünya",
+    "1": "Ekonomi",
+    "2": "Eğitim",
+    "3": "Gündem",
+    "4": "Kültür-Sanat",
+    "5": "Otomobil",
+    "6": "Sağlık",
+    "7": "Spor",
+    "8": "Teknoloji",
+    "9": "Yaşam"
+  }
+}

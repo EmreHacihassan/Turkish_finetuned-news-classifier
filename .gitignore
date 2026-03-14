@@ -1,0 +1,150 @@
+# ============================================================================
+# PYTHON & VIRTUAL ENVIRONMENTS
+# ============================================================================
+.venv/
+venv/
+env/
+ENV/
+.env
+*.egg-info/
+dist/
+build/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+.Python
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ============================================================================
+# JUPYTER & NOTEBOOKS
+# ============================================================================
+.ipynb_checkpoints/
+.jupyter/
+*.ipynb_checkpoints
+*/.ipynb_checkpoints/
+
+# ============================================================================
+# DATA & LARGE FILES
+# ============================================================================
+data/train.csv
+data/validation.csv
+data/test.csv
+data/*.csv
+data/*.parquet
+data/*.feather
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.npy
+*.npz
+
+# ============================================================================
+# MODEL & TRAINING ARTIFACTS
+# ============================================================================
+# Core model files (train and save only in special cases, not in repo)
+# Note: Only .json metadata files (config, tokenizer) are tracked
+# Large weights (.bin, .safetensors) are excluded to avoid LFS bloat
+model/*.bin
+model/*.safetensors
+model/*.msgpack
+model/*.pt
+model/*.pth
+
+# Training checkpoints & logs
+checkpoints/
+logs/
+*.log
+training_logs/
+wandb/
+
+# Generated artifacts
+*.png
+eda_*.png
+confusion_matrix.png
+training_curves.png
+*_curves.png
+
+# ============================================================================
+# BLOBS & MANIFESTS (local cache, not for version control)
+# ============================================================================
+blobs/
+manifests/
+.ollama/
+.ollama_cache/
+
+# ============================================================================
+# OS & EDITOR FILES
+# ============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.vscode-insiders/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ============================================================================
+# IDE & LOCAL DEVELOPMENT
+# ============================================================================
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.VS/
+.vs/
+*.user
+*.xcworkspace
+*.xcodeproj/
+
+# ============================================================================
+# OS TEMPORARY FILES
+# ============================================================================
+*.tmp
+*.temp
+tmp/
+temp/
+
+# ============================================================================
+# TESTING
+# ============================================================================
+.tox/
+.hypothesis/
+.pytest_cache/
+test_results/
+coverage/
+
+# ============================================================================
+# DEPENDENCY FILES (if using lock files for deployment tracking)
+# ============================================================================
+# Uncomment if using Poetry, Pipenv, or other lock managers
+# poetry.lock
+# Pipfile.lock
+
+# ============================================================================
+# ENVIRONMENT SPECIFIC
+# ============================================================================
+.env.local
+.env.*.local
+secrets/
+credentials.json
+*.pem
+*.key

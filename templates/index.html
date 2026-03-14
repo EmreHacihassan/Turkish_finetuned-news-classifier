@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkçe Haber Sınıflandırıcı</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>📰 Türkçe Haber Sınıflandırıcı</h1>
+        <p class="subtitle">DistilBERT ile otomatik haber kategorilendirme</p>
+    </header>
+
+    <div class="container">
+        <!-- Kategori Sidebar -->
+        <aside class="sidebar">
+            <h3>Kategoriler</h3>
+            <ul class="category-list">
+                <li>
+                    <a href="#" class="cat-btn active" data-cat="all">
+                        <span class="cat-name">Tümü</span>
+                        <span class="cat-count" id="count-all">0</span>
+                    </a>
+                </li>
+                {% for cat in categories %}
+                <li>
+                    <a href="#" class="cat-btn" data-cat="{{ cat }}">
+                        <span class="cat-icon">{{ icons.get(cat, '📄') }}</span>
+                        <span class="cat-name">{{ cat }}</span>
+                        <span class="cat-count" id="count-{{ cat }}">0</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            <button id="refresh-btn" class="refresh-btn" onclick="refreshNews()">
+                🔄 Haberleri Güncelle
+            </button>
+            <div id="status" class="status"></div>
+        </aside>
+
+        <!-- Haber Listesi -->
+        <main class="news-area">
+            <div id="loading" class="loading" style="display:none;">
+                <div class="spinner"></div>
+                <p>Haberler çekiliyor ve sınıflandırılıyor...</p>
+            </div>
+            <div id="news-list" class="news-list"></div>
+            <div id="empty-msg" class="empty-msg">
+                <p>Haberleri görmek için <strong>"Haberleri Güncelle"</strong> butonuna tıklayın.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let allNews = [];
+        let currentCategory = 'all';
+
+        // Kategori butonları
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.cat;
+                renderNews();
+            });
+        });
+
+        async function refreshNews() {
+            const loading = document.getElementById('loading');
+            const newsList = document.getElementById('news-list');
+            const emptyMsg = document.getElementById('empty-msg');
+            const status = document.getElementById('status');
+            const btn = document.getElementById('refresh-btn');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Çekiliyor...';
+            loading.style.display = 'flex';
+            newsList.innerHTML = '';
+            emptyMsg.style.display = 'none';
+            status.textContent = '';
+
+            try {
+                const resp = await fetch('/api/refresh');
+                const data = await resp.json();
+                if (data.error) {
+                    status.textContent = '❌ ' + data.error;
+                    status.className = 'status error';
+                } else {
+                    allNews = data.news;
+                    status.textContent = `✅ ${allNews.length} haber sınıflandırıldı`;
+                    status.className = 'status success';
+                    updateCounts();
+                    renderNews();
+                }
+            } catch (err) {
+                status.textContent = '❌ Bağlantı hatası: ' + err.message;
+                status.className = 'status error';
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                btn.textContent = '🔄 Haberleri Güncelle';
+            }
+        }
+
+        function updateCounts() {
+            const counts = {};
+            allNews.forEach(n => {
+                counts[n.category] = (counts[n.category] || 0) + 1;
+            });
+            document.getElementById('count-all').textContent = allNews.length;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                const cat = btn.dataset.cat;
+                if (cat !== 'all') {
+                    const countEl = document.getElementById('count-' + cat);
+                    if (countEl) countEl.textContent = counts[cat] || 0;
+                }
+            });
+        }
+
+        function renderNews() {
+            const list = document.getElementById('news-list');
+            const emptyMsg = document.getElementById('empty-msg');
+
+            const filtered = currentCategory === 'all'
+                ? allNews
+                : allNews.filter(n => n.category === currentCategory);
+
+            if (filtered.length === 0 && allNews.length > 0) {
+                list.innerHTML = '<p class="no-news">Bu kategoride haber bulunamadı.</p>';
+                emptyMsg.style.display = 'none';
+                return;
+            }
+            if (filtered.length === 0) {
+                emptyMsg.style.display = 'block';
+                list.innerHTML = '';
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+            list.innerHTML = filtered.map(n => `
+                <article class="news-card">
+                    <div class="news-meta">
+                        <span class="news-cat cat-${n.category.replace(/[^a-zA-Z]/g, '')}">${n.category}</span>
+                        <span class="news-confidence">${(n.confidence * 100).toFixed(1)}%</span>
+                        <span class="news-source">${n.source}</span>
+                    </div>
+                    <h3 class="news-title">
+                        <a href="${n.url}" target="_blank" rel="noopener">${n.title}</a>
+                    </h3>
+                    <p class="news-summary">${n.summary || ''}</p>
+                    <div class="news-footer">
+                        <span class="news-date">${n.date || ''}</span>
+                    </div>
+                </article>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

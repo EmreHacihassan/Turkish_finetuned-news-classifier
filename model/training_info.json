@@ -1,0 +1,51 @@
+{
+  "model_name": "dbmdz/distilbert-base-turkish-cased",
+  "num_labels": 10,
+  "categories": [
+    "Dünya",
+    "Ekonomi",
+    "Eğitim",
+    "Gündem",
+    "Kültür-Sanat",
+    "Otomobil",
+    "Sağlık",
+    "Spor",
+    "Teknoloji",
+    "Yaşam"
+  ],
+  "max_len": 256,
+  "batch_size": 16,
+  "grad_accum": 4,
+  "effective_batch": 64,
+  "epochs": 3,
+  "learning_rate": 2e-05,
+  "use_amp": false,
+  "best_val_f1": 0.0,
+  "test_accuracy": 0.11194769169803843,
+  "test_f1_macro": 0.027850405771285464,
+  "train_samples": 273594,
+  "val_samples": 14373,
+  "test_samples": 15141,
+  "history": {
+    "train_loss": [
+      2.3142495453357697
+    ],
+    "val_loss": [
+      2.283603310585022
+    ],
+    "val_acc": [
+      0.109375
+    ],
+    "val_f1": [
+      0.020588235294117647
+    ],
+    "val_precision": [
+      0.011666666666666667
+    ],
+    "val_recall": [
+      0.0875
+    ]
+  },
+  "device": "cpu",
+  "timestamp": "2026-03-14 18:41:28"
+}
